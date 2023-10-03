@@ -1,18 +1,17 @@
 // const express = require('express');
+// const { ApolloServer } = require('apollo-server-express');
 // const path = require('path');
-// const db = require('./config/connection');
-// const routes = require('./routes');
 
 // const { typeDefs, resolvers } = require('./schemas');
-// const { ApolloServer } = require('apollo-server-express');
+// const db = require('./config/connection');
 
-// const app = express();
 // const PORT = process.env.PORT || 3001;
-
+// const app = express();
 // const server = new ApolloServer({
 //   typeDefs,
-//   resolvers
+//   resolvers,
 // });
+
 
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
@@ -84,3 +83,5 @@ const startApolloServer = async () => {
 // Call the async function to start the server
   startApolloServer();
  
+
+ // 2:09:00

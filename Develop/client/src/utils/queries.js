@@ -18,7 +18,3 @@ export const GET_ME = gql`
     }
 }
 `
-
-export const LOGIN_USER = gql `
-
-`

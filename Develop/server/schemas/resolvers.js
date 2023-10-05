@@ -6,13 +6,13 @@ const { Types } = require('mongoose');
 
 const resolvers = {
   Query: {
-    me: async (parent, { id }, context) => {
+    me: async (parent, { id }) => {
       const me = await User.findOne({ _id: new Types.ObjectId(id) }).populate('savedBooks');
       return me;
     }
   },
   Mutation: {
-    addUser: async (parent,  args, context) => {
+    addUser: async (parent,  args) => {
       const user = await User.create({
         username: args.username,
         email: args.email,

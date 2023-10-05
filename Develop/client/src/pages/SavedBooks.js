@@ -21,6 +21,7 @@ const SavedBooks = () => {
     const getUserData = async () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
+        console.log('bypassing for now')
 
         if (!token) {
           return false;

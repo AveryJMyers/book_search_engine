@@ -12,7 +12,9 @@ import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 import { useMutation } from '@apollo/client';
-
+import { useQuery } from '@apollo/client';
+import { ADD_BOOK } from '../utils/mutations'
+import { GET_ME } from '../utils/queries'
 
 
 const SearchBooks = () => {
@@ -23,6 +25,8 @@ const SearchBooks = () => {
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+
+  const [saveBook, {error, data}] = useMutation(ADD_BOOK)
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -75,12 +79,15 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
+      console.log(bookToSave)
+      const { data } = await saveBook({
+        variables: { bookData: bookToSave },
+      });
+  
+      if (error) {
+        throw new Error('Error saving book');
       }
-
+  
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
@@ -124,8 +131,9 @@ const SearchBooks = () => {
         <Row>
           {searchedBooks.map((book) => {
             return (
-              <Col md="4">
-                <Card key={book.bookId} border='dark'>
+              // moved key to fix unique prop error
+              <Col md="4"key={book.bookId}>
+                <Card  border='dark'>
                   {book.image ? (
                     <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
                   ) : null}

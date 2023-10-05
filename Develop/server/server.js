@@ -53,6 +53,11 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => {
+    const token = req.headers.authorization || '';
+    const user = getUser(token);
+    return { user };
+  }
 });
 
 app.use(express.urlencoded({ extended: false }));

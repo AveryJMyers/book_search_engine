@@ -16,14 +16,13 @@ module.exports = {
     }
   
     if (!token) {
-      return { user: null };
+      throw new Error('You have no token!');
     }
   
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       return { user: data };
     } catch {
-      console.log('Invalid token');
       throw new Error('Invalid token');
     }
   },

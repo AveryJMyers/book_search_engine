@@ -53,7 +53,7 @@ const resolvers = {
         throw new AuthenticationError('You need to be logged in!');
       }
     },
-    removeBook: async (parent, { id }, context) => {
+    removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         try{ 
           const updatedUser = await User.findOneAndUpdate(

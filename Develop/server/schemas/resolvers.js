@@ -6,9 +6,9 @@ const { Types } = require('mongoose');
 
 const resolvers = {
   Query: {
-    me: async (parent, { id }) => {
-      const me = await User.findOne({ _id: new Types.ObjectId(id) }).populate('savedBooks');
-      return me;
+    me: async (parent, { id }, context) => {
+      const userData = await User.findOne({ _id: context.user._id })
+      return userData
     }
   },
   Mutation: {
@@ -21,7 +21,7 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    login: async(parents, { email, password }) => {
+    login: async (parents, { email, password }) => {
       const user = await User.findOne({ email });
       if (!user) {
         throw new AuthenticationError('No user found with this email address');
@@ -31,8 +31,11 @@ const resolvers = {
         throw new AuthenticationError('Email or Password is incorrect');
       }
       const token = signToken(user);
+      console.log(token, user)
       return { token, user };
     },
+
+
     saveBook: async (parent, { bookData }, context) => {
       if (context.user) {
         try {

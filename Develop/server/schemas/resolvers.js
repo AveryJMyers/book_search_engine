@@ -9,7 +9,10 @@ const resolvers = {
     me: async (parent, { id }, context) => {
       const userData = await User.findOne({ _id: context.user._id })
       return userData
-    }
+    },
+    getUsers: async () => {
+      return await User.find({});
+    },
   },
   Mutation: {
     addUser: async (parent,  args) => {
@@ -34,6 +37,12 @@ const resolvers = {
       console.log(token, user)
       return { token, user };
     },
+    // just adding this because i've made so many accounts :(
+    devDelUser: async (parent, { userId }) => {
+      const user = await User.findOneAndDelete({ _id: userId });
+      console.log('user deleted', user);
+    },
+
 
 
     saveBook: async (parent, { bookData }, context) => {
@@ -57,7 +66,7 @@ const resolvers = {
       if (context.user) {
         try{ 
           const updatedUser = await User.findOneAndUpdate(
-            {_id: context.user_id },
+            {_id: context.user._id },
             { $pull: { savedBooks: { bookId }}},
             {new: true}
           )

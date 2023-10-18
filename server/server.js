@@ -32,13 +32,13 @@ const startApolloServer = async () => {
     await server.start();
     server.applyMiddleware({ app });
 
-    // Connect to the database
-    await db.connect(process.env.MONGODB_URI);
+    db.once('open', () => {
 
 
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
+    });
     });
   } catch (error) {
     console.error('An error occurred while starting the server:', error);

@@ -28,18 +28,24 @@ app.get('/', (req, res) => {
 });
 
 const startApolloServer = async () => {
-  await server.start();
-  server.applyMiddleware({ app });
-  
-  db.once('open', () => {
+  try {
+    await server.start();
+    server.applyMiddleware({ app });
+
+    // Connect to the database
+    await db.connect(process.env.MONGODB_URI);
+
+
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
-    })
-  })
-  };
-  startApolloServer();
+    });
+  } catch (error) {
+    console.error('An error occurred while starting the server:', error);
+  }
+};
 
+startApolloServer();
 
 // const express = require('express');
 // const { ApolloServer } = require('apollo-server-express');
